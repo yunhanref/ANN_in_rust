@@ -9,7 +9,7 @@ mod dense_layer;
 mod network;
 mod errors;
 mod io;
-
+mod loss;
 
 use crate::matrix::Matrix;
 use crate::network::NeuralNetwork;
@@ -48,38 +48,47 @@ impl eframe::App for BrainApp {
         egui::CentralPanel::default().show(ctx, |ui| {
             ui.heading("GRUP 7: OOP-BRAIN SINIR AGI KUTUPHANESI");
             ui.separator();
-            
-            if ui.button("Rapor 5.3: XOR Demo Testini Calistir").clicked() {
-                // Ağın Kurulumu
-                let mut xor_net = NeuralNetwork::new();
-                
-                let layer1 = DenseLayer::new(2, 2, Box::new(Sigmoid));
-                let layer2 = DenseLayer::new(2, 1, Box::new(Sigmoid));
-                
-                xor_net.push_layer(Box::new(layer1));
-                xor_net.push_layer(Box::new(layer2));
 
-                // Girdi Matrisi 
+            if ui.button("XOR Agini Egit (1000 Epoch)").clicked() {
+                let mut xor_net = NeuralNetwork::new();
+
+                // XOR problemi için gizli katmanlı yapı
+                xor_net.push_layer(Box::new(DenseLayer::new(2, 4, Box::new(Sigmoid))));
+                xor_net.push_layer(Box::new(DenseLayer::new(4, 1, Box::new(Sigmoid))));
+
                 let mut xor_input = Matrix::new(2, 4);
                 *xor_input.get_mut(0, 0) = 0.0; *xor_input.get_mut(1, 0) = 0.0;
                 *xor_input.get_mut(0, 1) = 0.0; *xor_input.get_mut(1, 1) = 1.0;
                 *xor_input.get_mut(0, 2) = 1.0; *xor_input.get_mut(1, 2) = 0.0;
                 *xor_input.get_mut(0, 3) = 1.0; *xor_input.get_mut(1, 3) = 1.0;
 
-                // İleri Besleme
-                let xor_output = xor_net.run(&xor_input);
-                
+                let mut xor_target = Matrix::new(1, 4);
+                *xor_target.get_mut(0, 0) = 0.0;
+                *xor_target.get_mut(0, 1) = 1.0;
+                *xor_target.get_mut(0, 2) = 1.0;
+                *xor_target.get_mut(0, 3) = 0.0;
+
+                let mut final_loss = 0.0;
+                // 1000 tur (epoch) boyunca eğit
+                for _ in 0..1000 {
+                    final_loss = xor_net.train_step(&xor_input, &xor_target, 0.5);
+                }
+
+                let trained_output = xor_net.run(&xor_input);
+
                 self.xor_result = format!(
-                    "Girdi (0,0) -> Ag Ciktisi: {:.4}\n\
-                     Girdi (0,1) -> Ag Ciktisi: {:.4}\n\
-                     Girdi (1,0) -> Ag Ciktisi: {:.4}\n\
-                     Girdi (1,1) -> Ag Ciktisi: {:.4}\n\n\
-                     [Basarili] XOR yapisi calistirildi.",
-                     xor_output.get(0, 0), xor_output.get(0, 1), 
-                     xor_output.get(0, 2), xor_output.get(0, 3)
+                    "Egitim Tamamlandi! Son Hata (Loss): {:.6}\n\n\
+                    Tahminler:\n\
+                    Girdi (0,0) -> Hedef: 0.0 | Tahmin: {:.4}\n\
+                    Girdi (0,1) -> Hedef: 1.0 | Tahmin: {:.4}\n\
+                    Girdi (1,0) -> Hedef: 1.0 | Tahmin: {:.4}\n\
+                    Girdi (1,1) -> Hedef: 0.0 | Tahmin: {:.4}",
+                    final_loss,
+                    trained_output.get(0, 0), trained_output.get(0, 1),
+                    trained_output.get(0, 2), trained_output.get(0, 3)
                 );
             }
-            
+
             ui.add_space(10.0);
             
             egui::ScrollArea::vertical().show(ui, |ui| {

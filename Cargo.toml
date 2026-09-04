@@ -1,0 +1,9 @@
+[package]
+name = "oop_brain_gui"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+eframe = "0.24"
+rand = "0.8"
+winapi = { version = "0.3.9", features = ["winuser", "windef"] }

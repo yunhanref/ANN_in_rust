@@ -2,7 +2,7 @@
 
 OOP-Brain is a robust, from-scratch feedforward neural network and matrix computation engine originally developed in C++ and systematically re-engineered into memory-safe Rust with an integrated graphical user interface.
 
-<img width="80" height="60" alt="vid" src="https://github.com/user-attachments/assets/b5944cc0-b6ad-4b4c-b49d-c0800bd07865" />
+<img width="400" height="300" alt="vid" src="https://github.com/user-attachments/assets/b5944cc0-b6ad-4b4c-b49d-c0800bd07865" />
 
 ## Architectural Overview
 

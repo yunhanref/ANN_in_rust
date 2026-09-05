@@ -2,11 +2,8 @@ use std::fmt;
 
 #[derive(Debug)]
 pub enum BrainError {
-    // C++: DimensionMismatchException
     DimensionMismatch,
-    // C++: FileIOException
     FileIoError(String),
-    // C++: InvalidFormatException
     InvalidFormat,
 }
 

@@ -3,7 +3,6 @@ use crate::matrix::Matrix;
 pub struct MSE;
 
 impl MSE {
-    // Ortalama Kare Hata (Loss)
     pub fn forward(predicted: &Matrix, target: &Matrix) -> f64 {
         let mut sum = 0.0;
         let n = (predicted.rows * predicted.cols) as f64;
@@ -16,7 +15,6 @@ impl MSE {
         sum / n
     }
 
-    // Hata türevi (Geri yayılımın başlangıç noktası: dL/dPred)
     pub fn derivative(predicted: &Matrix, target: &Matrix) -> Matrix {
         let mut result = Matrix::new(predicted.rows, predicted.cols);
         let n = (predicted.rows * predicted.cols) as f64;

@@ -1,6 +1,4 @@
 use eframe::egui;
-// Projenin diger modullerini projene uygun sekilde cagiriyoruz:
-// mod matrix; mod traits; mod activations; mod dense_layer; mod network; mod errors; mod io;
 
 mod matrix;
 mod traits;
@@ -18,7 +16,6 @@ use crate::activations::Sigmoid;
 
 fn main() -> eframe::Result<()> {
     let options = eframe::NativeOptions {
-        // Yeni eframe surumu icin pencere boyutu ayari
         viewport: egui::ViewportBuilder::default().with_inner_size([600.0, 400.0]),
         ..Default::default()
     };
@@ -52,7 +49,6 @@ impl eframe::App for BrainApp {
             if ui.button("XOR Agini Egit (1000 Epoch)").clicked() {
                 let mut xor_net = NeuralNetwork::new();
 
-                // XOR problemi için gizli katmanlı yapı
                 xor_net.push_layer(Box::new(DenseLayer::new(2, 4, Box::new(Sigmoid))));
                 xor_net.push_layer(Box::new(DenseLayer::new(4, 1, Box::new(Sigmoid))));
 
@@ -69,7 +65,6 @@ impl eframe::App for BrainApp {
                 *xor_target.get_mut(0, 3) = 0.0;
 
                 let mut final_loss = 0.0;
-                // 1000 tur (epoch) boyunca eğit
                 for _ in 0..1000 {
                     final_loss = xor_net.train_step(&xor_input, &xor_target, 0.5);
                 }

@@ -8,7 +8,7 @@ impl Activation for Sigmoid {
     }
     fn derivative(&self, val: f64) -> f64 {
         let s = self.transform(val);
-        s * (1.0 - s) // Sigmoid türevi: s * (1 - s)
+        s * (1.0 - s)
     }
 }
 pub struct ReLU;
@@ -30,6 +30,6 @@ impl Activation for Tanh {
     }
     fn derivative(&self, val: f64) -> f64 {
         let t = self.transform(val);
-        1.0 - t * t // Tanh türevi: 1 - tanh^2(val)
+        1.0 - t * t
     }
 }

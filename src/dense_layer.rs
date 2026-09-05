@@ -6,7 +6,6 @@ pub struct DenseLayer {
     pub weights: Matrix,
     pub bias: Matrix,
     act_func: Box<dyn Activation>,
-    // RefCell yerine thread-safe olan Mutex kullaniyoruz
     last_input: Mutex<Option<Matrix>>,
     last_z: Mutex<Option<Matrix>>,
 }

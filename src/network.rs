@@ -1,6 +1,6 @@
 use crate::matrix::Matrix;
 use crate::traits::Layer;
-use crate::loss::MSE; // Eklendi
+use crate::loss::MSE;
 
 pub struct NeuralNetwork {
     pipeline: Vec<Box<dyn Layer>>,

@@ -6,7 +6,6 @@ use std::io::{BufRead, BufReader, Write};
 pub struct DataHandler;
 
 impl DataHandler {
-    // C++: static Matrix loadCSV(const std::string& path, bool hasHeader)
     pub fn load_csv(path: &str, has_header: bool) -> Result<Matrix, BrainError> {
         let file = File::open(path).map_err(|e| BrainError::FileIoError(e.to_string()))?;
         let reader = BufReader::new(file);
@@ -39,7 +38,6 @@ impl DataHandler {
         Ok(result)
     }
 
-    // C++: static void saveCSV(const std::string& path, const Matrix& m)
     pub fn save_csv(path: &str, m: &Matrix) -> Result<(), BrainError> {
         let mut file = File::create(path).map_err(|e| BrainError::FileIoError(e.to_string()))?;
         for i in 0..m.rows {

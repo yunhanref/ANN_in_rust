@@ -1,9 +1,8 @@
 use rand::Rng;
 use std::fmt;
-use std::ops::{Add, AddAssign, Mul, Sub}; // Temizlenmis import listesi
+use std::ops::{Add, AddAssign, Mul, Sub};
 
-// C++'taki pointer tabanli "data" yerine Rust'in guvenli vektoru kullaniliyor.
-// Copy trait'i buyuk veriler icin implemente edilmez, bunun yerine Clone kullanilir.
+
 #[derive(Clone, Debug, PartialEq)]
 pub struct Matrix {
     pub rows: usize,
@@ -12,7 +11,6 @@ pub struct Matrix {
 }
 
 impl Matrix {
-    // 1. Kurucu (Constructor) - Sifirlarla doldurur (C++: Matrix(int r, int c))
     pub fn new(r: usize, c: usize) -> Self {
         Matrix {
             rows: r,
@@ -20,10 +18,7 @@ impl Matrix {
             data: vec![0.0; r * c],
         }
     }
-    // NOT: Yikici (Destructor), Kopya/Tasima Kuruculari ve Atama operatorleri
-    // Rust derleyicisi tarafindan otomatik ve guvenli bir sekilde yonetilir.
 
-    // 7. Eleman Erisimi (at ve operator())
     pub fn get(&self, r: usize, c: usize) -> f64 {
         self.data[r * self.cols + c]
     }
@@ -32,7 +27,6 @@ impl Matrix {
         &mut self.data[r * self.cols + c]
     }
 
-    // 13. Temel Matris Islemleri
     pub fn transpose(&self) -> Matrix {
         let mut result = Matrix::new(self.cols, self.rows);
         for i in 0..self.rows {
@@ -62,7 +56,6 @@ impl Matrix {
     }
 }
 
-// 8. Matris Carpimi (operator*)
 impl Mul<&Matrix> for &Matrix {
     type Output = Result<Matrix, String>;
 
@@ -84,12 +77,10 @@ impl Mul<&Matrix> for &Matrix {
     }
 }
 
-// 9. Matris Toplamasi (operator+) - Broadcasting Destegi Eklenmis Hali
 impl Add<&Matrix> for &Matrix {
     type Output = Result<Matrix, String>;
 
     fn add(self, other: &Matrix) -> Self::Output {
-        // Kolon bazli broadcasting
         if self.rows == other.rows && other.cols == 1 {
             let mut result = Matrix::new(self.rows, self.cols);
             for i in 0..self.rows {
@@ -100,7 +91,6 @@ impl Add<&Matrix> for &Matrix {
             }
             return Ok(result);
         }
-        // Satir bazli broadcasting
         if self.cols == other.cols && other.rows == 1 {
             let mut result = Matrix::new(self.rows, self.cols);
             for j in 0..self.cols {
@@ -111,7 +101,6 @@ impl Add<&Matrix> for &Matrix {
             }
             return Ok(result);
         }
-        // Normal eleman bazli toplama
         if self.rows != other.rows || self.cols != other.cols {
             return Err("Dimension mismatch".to_string());
         }
@@ -123,12 +112,10 @@ impl Add<&Matrix> for &Matrix {
     }
 }
 
-// 10. Matris Cikarmasi (operator-) - Broadcasting Destegi Eklenmis Hali
 impl Sub<&Matrix> for &Matrix {
     type Output = Result<Matrix, String>;
 
     fn sub(self, other: &Matrix) -> Self::Output {
-        // Kolon bazli broadcasting
         if self.rows == other.rows && other.cols == 1 {
             let mut result = Matrix::new(self.rows, self.cols);
             for i in 0..self.rows {
@@ -139,7 +126,6 @@ impl Sub<&Matrix> for &Matrix {
             }
             return Ok(result);
         }
-        // Satir bazli broadcasting
         if self.cols == other.cols && other.rows == 1 {
             let mut result = Matrix::new(self.rows, self.cols);
             for j in 0..self.cols {
@@ -150,7 +136,6 @@ impl Sub<&Matrix> for &Matrix {
             }
             return Ok(result);
         }
-        // Normal eleman bazli cikarma
         if self.rows != other.rows || self.cols != other.cols {
             return Err("Dimension mismatch".to_string());
         }
@@ -162,7 +147,6 @@ impl Sub<&Matrix> for &Matrix {
     }
 }
 
-// 11. Skaler Islemler
 impl Mul<f64> for &Matrix {
     type Output = Matrix;
     fn mul(self, scalar: f64) -> Self::Output {
@@ -185,7 +169,6 @@ impl Add<f64> for &Matrix {
     }
 }
 
-// 12. Bilesik Atama Operatorleri
 impl AddAssign<&Matrix> for Matrix {
     fn add_assign(&mut self, other: &Matrix) {
         if self.rows == other.rows && self.cols == other.cols {
@@ -193,12 +176,9 @@ impl AddAssign<&Matrix> for Matrix {
                 self.data[i] += other.data[i];
             }
         }
-        // Karmaşık boyut uyumsuzlukları (broadcasting hataları) 
-        // için Rust panikleri tetikleyebilir veya Result donduren yontemler tercih edilebilir.
     }
 }
 
-// 14. Yazdirma Yardimcilari (operator<<)
 impl fmt::Display for Matrix {
     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
         for i in 0..self.rows {

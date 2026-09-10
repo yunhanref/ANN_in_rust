@@ -1,32 +1,40 @@
-# OOP-Brain: Rust GUI Edition
+# OOP-Brain: Rust GUI & ANN Edition
 
-OOP-Brain is a robust, from-scratch feedforward neural network and matrix computation engine originally developed in C++ and systematically re-engineered into memory-safe Rust with an integrated graphical user interface.
+OOP-Brain is a robust, from-scratch feedforward neural network and matrix computation engine engineered in memory-safe Rust with an integrated graphical user interface (`eframe`/`egui`).
 
-<img width="1086" height="599" alt="ann_rust" src="https://github.com/user-attachments/assets/808c0a08-61cb-4344-a332-1933cbbb3c88" />
+<img width="1086" height="599" alt="ann_rust" src="https://github.com/user-attachments/assets/23ce6f92-c25f-4d97-898b-d902d1a131bc" />
 
-## Architectural Overview
+## Features
 
+* **From-Scratch Architecture:** Implements matrix operations, linear algebra transformations, and backpropagation without relying on heavy deep-learning frameworks.
+* **Multi-Class Classification:** Supports **ReLU**, **Sigmoid**, and **Softmax** activations paired with **Categorical Cross-Entropy** and **MSE** loss functions.
+* **Tabular Data Processing:** Built-in CSV dataset parser with automated dataset splitting and shuffling mechanisms.
+* **Interactive GUI Dashboard:** Real-time training parameter tuning (Epochs, Learning Rate, Batch Size), live loss plotting via `egui_plot`, and inference tools.
+* **Model Persistence:** Save and load trained synaptic weights and biases securely.
 
-The system is engineered following modular software design principles, decoupling core numerical routines from user interface layers. The structural hierarchy is organized into the following core modules:
+## Project Structure
 
-* **Matrix Engine (`matrix.rs`)**: Replaces raw pointer allocations with Rust's safe heap-allocated `Vec<f64>` vectors, supporting linear transformations, broadcasting operations, transpositions, and Hadamard products[cite: 17].
-* **Activation Framework (`activations.rs`)**: Implements non-linear transformations and analytical derivatives for **Sigmoid**, **ReLU**, and **Tanh** functions[cite: 18].
-* **Polymorphic Traits (`traits.rs`)**: Establishes core interfaces via `Activation` and `Layer` traits to enforce decoupled component interaction[cite: 19].
-* **Neural Network Pipeline (`network.rs`)**: Manages sequential layer execution (`pipeline`), forward inference propagation, and gradient-based error optimization via `train_step`[cite: 20].
-* **Error Management (`errors.rs`)**: Replaces traditional exceptions with a structured `BrainError` enum to ensure safe, panic-free error propagation[cite: 21].
-* **Persistence Module (`io.rs`)**: Facilitates structured tabular dataset parsing and model weight persistence using comma-separated value (`.csv`) streams[cite: 22].
-* **Graphical Interface (`main.rs`)**: Powered by the `eframe`/`egui` immediate-mode GUI framework to render real-time simulation metrics and interactive training controls[cite: 23].
-
-## Mathematical Formulation & Backpropagation
-
-The engine computes forward activations via affine transformations ($Z = W \cdot X + b$) followed by non-linear mapping. Gradient descent optimization updates synaptic weights using Mean Squared Error (MSE) loss derivatives propagated backward through the sequential pipeline.
+* `matrix.rs`:      Heap-allocated safe matrix math engine supporting transposition, broadcasting, and slicing.
+* `activations.rs`: Mathematical activation functions and numerical stability routines.
+* `traits.rs`:      Polymorphic core abstractions for `Layer` and `Activation`.
+* `network.rs`:     Sequential pipeline execution and gradient descent optimization.
+* `dense_layer.rs`: Fully connected linear layers with thread-safe interior mutability (`Mutex`).
+* `loss.rs`:        Evaluation metrics, loss derivatives, and classification accuracy calculations.
+* `dataset.rs`:     Data preprocessing, one-hot encoding, and train/test partitioning.
+* `io.rs`:          Safe file stream management for CSV ingestion and model weight exports.
+* `main.rs`:        Immediate-mode desktop graphical user interface.
 
 ## Getting Started
 
-To compile and execute the desktop application locally, ensure Rust and Cargo are installed, then configure your workspace dependencies inside `Cargo.toml`:
+Ensure you have Rust and Cargo installed locally. Clone the repository and run the application via Cargo:
+
+```bash
+cargo run
+```
 
 ```toml
 [dependencies]
 eframe = "0.24"
 rand = "0.8"
 winapi = { version = "0.3.9", features = ["winuser", "windef"] }
+```

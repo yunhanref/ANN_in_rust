@@ -38,7 +38,7 @@ struct AnnApp {
     learning_rate: f64,
     batch_size: usize,
     status_log: String,
-    history: Vec<(f64, f64)>, // (Loss, Acc)
+    history: Vec<(f64, f64)>, 
     net: NeuralNetwork,
     inference_input: String,
 }

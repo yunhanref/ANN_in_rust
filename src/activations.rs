@@ -30,7 +30,6 @@ impl Activation for Softmax {
     fn transform(&self, val: f64) -> f64 { val }
     fn derivative(&self, _val: f64) -> f64 { 1.0 }
 
-    // Sayisal Kararli (Numerically Stable) Sutun Bazli Softmax
     fn apply(&self, z: &Matrix) -> Matrix {
         let mut a = Matrix::new(z.rows, z.cols);
         for j in 0..z.cols {
@@ -52,7 +51,6 @@ impl Activation for Softmax {
         a
     }
 
-    // Cross-Entropy ile birlesik gradyan turevi dogrudan aktarilir
     fn apply_derivative(&self, output_grad: &Matrix, _z: &Matrix) -> Matrix {
         output_grad.clone()
     }

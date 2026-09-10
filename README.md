@@ -37,4 +37,5 @@ cargo run
 eframe = "0.24"
 rand = "0.8"
 winapi = { version = "0.3.9", features = ["winuser", "windef"] }
+egui_plot = "0.24"
 ```

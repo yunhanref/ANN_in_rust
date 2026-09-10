@@ -31,7 +31,6 @@ impl MSE {
 pub struct CrossEntropy;
 
 impl CrossEntropy {
-    // Categorical Cross-Entropy Loss: -sum(Y * log(P + 1e-9)) / N
     pub fn forward(predicted: &Matrix, target: &Matrix) -> f64 {
         let mut total_loss = 0.0;
         let eps = 1e-9;
@@ -45,7 +44,6 @@ impl CrossEntropy {
         total_loss / (predicted.cols as f64)
     }
 
-    // Softmax + Cross-Entropy birleşik gradyan türevi: (P - Y) / N
     pub fn derivative(predicted: &Matrix, target: &Matrix) -> Matrix {
         let mut grad = Matrix::new(predicted.rows, predicted.cols);
         let n = predicted.cols as f64;
@@ -58,7 +56,6 @@ impl CrossEntropy {
         grad
     }
 
-    // Doğruluk Yüzdesi (Accuracy %)
     pub fn accuracy(predicted: &Matrix, target: &Matrix) -> f64 {
         let pred_classes = predicted.argmax_cols();
         let target_classes = target.argmax_cols();

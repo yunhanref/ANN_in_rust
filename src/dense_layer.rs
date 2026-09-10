@@ -45,7 +45,6 @@ impl Layer for DenseLayer {
         let input_guard = self.last_input.lock().unwrap();
         let input = input_guard.as_ref().expect("Once forward pass yapilmalidir.");
 
-        // Aktivasyona gore gradyan duzeltmesi (Softmax icin direct pass)
         let delta = self.act_func.apply_derivative(output_gradient, z);
 
         let input_t = input.transpose();

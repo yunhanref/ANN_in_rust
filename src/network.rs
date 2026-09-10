@@ -1,6 +1,6 @@
 use crate::matrix::Matrix;
 use crate::traits::Layer;
-use crate::loss::{MSE, CrossEntropy}; // CrossEntropy buraya eklendi
+use crate::loss::{MSE, CrossEntropy}; 
 
 pub struct NeuralNetwork {
     pub pipeline: Vec<Box<dyn Layer>>,
@@ -54,10 +54,8 @@ impl NeuralNetwork {
                 let x_batch = x_train.slice_cols(start_idx, end_idx);
                 let y_batch = y_train.slice_cols(start_idx, end_idx);
 
-                // 1. İleri Besleme
                 let output = self.run(&x_batch);
 
-                // 2. Geri Yayılım
                 let mut gradient = CrossEntropy::derivative(&output, &y_batch);
                 for layer in self.pipeline.iter_mut().rev() {
                     gradient = layer.backward(&gradient, learning_rate);
@@ -66,7 +64,6 @@ impl NeuralNetwork {
                 start_idx = end_idx;
             }
 
-            // Epoch sonu değerlendirmesi
             let predictions = self.run(x_train);
             let loss = CrossEntropy::forward(&predictions, y_train);
             let acc = CrossEntropy::accuracy(&predictions, y_train);

@@ -4,7 +4,6 @@ use rand::thread_rng;
 pub struct Dataset;
 
 impl Dataset {
-    // Etiket sütununu One-Hot kodlanmış hedef matrisine dönüştürür
     pub fn to_one_hot(labels: &[usize], num_classes: usize) -> Matrix {
         let mut target = Matrix::new(num_classes, labels.len());
         for (col, &class_id) in labels.iter().enumerate() {
@@ -15,7 +14,6 @@ impl Dataset {
         target
     }
 
-    // Veri setini Train ve Test alt kümelerine ayırır
     pub fn train_test_split(
         x: &Matrix, 
         y: &Matrix, 

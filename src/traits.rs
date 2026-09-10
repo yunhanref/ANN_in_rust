@@ -4,7 +4,6 @@ pub trait Activation: Send + Sync {
     fn transform(&self, val: f64) -> f64;
     fn derivative(&self, val: f64) -> f64;
 
-    // Standart eleman bazli donusum (Sigmoid, ReLU, Tanh)
     fn apply(&self, z: &Matrix) -> Matrix {
         let mut a = Matrix::new(z.rows, z.cols);
         for i in 0..z.rows {
@@ -15,7 +14,6 @@ pub trait Activation: Send + Sync {
         a
     }
 
-    // Standart gradyan turev carpimi
     fn apply_derivative(&self, output_grad: &Matrix, z: &Matrix) -> Matrix {
         let mut sp = Matrix::new(z.rows, z.cols);
         for i in 0..z.rows {

@@ -49,12 +49,11 @@ impl DataHandler {
         for (i, layer) in net.pipeline.iter().enumerate() {
             if let Some((w, b)) = layer.get_params() {
                 writeln!(file, "LAYER:{}", i).map_err(|e| e.to_string())?;
-                // Agirliklari bas
+
                 for r in 0..w.rows {
                     let row_strs: Vec<String> = (0..w.cols).map(|c| w.get(r, c).to_string()).collect();
                     writeln!(file, "W:{}", row_strs.join(",")).map_err(|e| e.to_string())?;
                 }
-                // Biaslari bas
                 for r in 0..b.rows {
                     writeln!(file, "B:{}", b.get(r, 0)).map_err(|e| e.to_string())?;
                 }
